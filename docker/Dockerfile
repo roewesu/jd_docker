@@ -45,8 +45,7 @@ RUN set -ex \
 
 RUN echo "[global] \
     index-url = http://pypi.tuna.tsinghua/simple \
-    trusted-host = \
-    pypi.tuna.tsinghua \
+    trusted-host = pypi.tuna.tsinghua \
     timeout = 120 \
     " > /etc/pip.conf
 # ====================================================================
