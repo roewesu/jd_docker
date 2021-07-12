@@ -182,3 +182,5 @@
 2 0 * * * node /scripts/jd_qjd.js >> /scripts/logs/jd_qjd.log 2>&1
 #京东超级盒子
 15 9,20 * 5,6 * node /scripts/jd_superBox.js >> /scripts/logs/jd_superBox.log 2>&1
+#京喜财富岛新版TS
+5 7,12,18 * * * ts-node /scripts/jd_cfd.ts >> /scripts/logs/jd_cfd.log 2>&1
