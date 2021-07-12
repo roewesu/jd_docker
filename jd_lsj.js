@@ -11,7 +11,7 @@ export lsjdh="jdAward4" ##兑换牛奶
 [task_local]
 0 11 * * *
 */
-const $ = new Env( '柠檬京东零食街' );
+const $ = new Env('柠檬京东零食街');
 const notify = $.isNode() ? require( './sendNotify' ) : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require( './jdCookie.js' ) : '';
