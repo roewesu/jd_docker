@@ -3,7 +3,7 @@
 0 6,7,8 * * *
 */
 
-const $ = new Env( '柠檬品牌狂欢日' );
+const $ = new Env('柠檬品牌狂欢日');
 const notify = $.isNode() ? require( './sendNotify' ) : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require( './jdCookie.js' ) : '';

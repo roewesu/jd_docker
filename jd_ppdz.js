@@ -6,7 +6,7 @@
  1 0 * * * https://raw.githubusercontent.com/panghu999/panghu/master/jd_ppdz.js, tag=柠檬东东泡泡大战, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 */
 
-const $ = new Env( '柠檬东东泡泡大战' );
+const $ = new Env('柠檬东东泡泡大战');
 const jdCookieNode = $.isNode() ? require( './jdCookie.js' ) : '';
 
 const randomCount = $.isNode() ? 20 : 5;

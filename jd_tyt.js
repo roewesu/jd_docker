@@ -7,7 +7,7 @@ export tytpacketId=""
 #柠檬推一推
 0 0 * * * http://nm66.top/jd_tyt.js, tag=柠檬推一推, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 */
-const $ = new Env( '柠檬推一推' );
+const $ = new Env('柠檬推一推');
 const notify = $.isNode() ? require( './sendNotify' ) : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require( './jdCookie.js' ) : '';
