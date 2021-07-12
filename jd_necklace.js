@@ -10,7 +10,7 @@ Last Modified time: 2021-05-28 17:27:14
 
  */
 const $ = new Env('点点券');
-const ZooFaker = require('./jd_zooFakerNecklace.js')
+const ZooFaker = require('./jdZooFakerNecklace.js')
 let allMessage = ``;
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
