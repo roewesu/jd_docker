@@ -175,7 +175,7 @@
 #燃动夏季
 12 0,6-23/2 * * * node /scripts/jd_summerMovement.js >> /scripts/logs/jd_summerMovement.log 2>&1
 #愤怒的锦鲤
-2 0 * * * node /scripts/jd_angryKoi.js >> /scripts/logs/jd_angryKoi.log 2>&1
+15 0 * * * node /scripts/jd_angryKoi.js >> /scripts/logs/jd_angryKoi.log 2>&1
 #全民抢京豆
 2 0 * * * node /scripts/jd_qjd.js >> /scripts/logs/jd_qjd.log 2>&1
 #京东超级盒子
@@ -184,3 +184,5 @@
 5 7,12,18 * * * ts-node /scripts/jd_cfd.ts >> /scripts/logs/jd_cfd.log 2>&1
 #京喜财富岛热气球挂后台TS
 5 7,12,18 * * * ts-node /scripts/jd_cfd_loop.ts >> /scripts/logs/jd_cfd_loop.log 2>&1
+#宠汪汪偷好友积分与狗粮
+3 */2 * * * node /scripts/jd_joy_steal.js >> /scripts/logs/jd_joy_steal.log 2>&1
