@@ -43,7 +43,7 @@ const fileArr = [];
 const jdCookieNode = $.isNode() ? require( './jdCookie.js' ) : '';
 let validator = '';
 try {
-  validator = require( './JdJrValidator.js' );
+  validator = require( './jdJrValidator.js' );
 } catch ( e ) {
   fs.readdir( filePath, function ( err, files ) {
     if ( err ) {
@@ -52,10 +52,10 @@ try {
     }
     const count = files.length;
     files.forEach( function ( filename ) {
-      if ( filename.indexOf( 'JdJrValidator.js' ) != -1 || filename.indexOf( 'JDJRValidator.js' ) != -1 ) {
+      if ( filename.indexOf( 'jdJrValidator.js' ) != -1 || filename.indexOf( 'JDJRValidator.js' ) != -1 ) {
         console.warn( filename );
-        fs.writeFileSync( "JdJrValidator.js", fs.readFileSync( filename ) );
-        validator = require( './JdJrValidator.js' );
+        fs.writeFileSync( "jdJrValidator.js", fs.readFileSync( filename ) );
+        validator = require( './jdJrValidator.js' );
       }
     } )
   } );

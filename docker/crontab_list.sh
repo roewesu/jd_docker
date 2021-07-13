@@ -182,3 +182,5 @@
 15 9,20 * 5,6 * node /scripts/jd_superBox.js >> /scripts/logs/jd_superBox.log 2>&1
 #京喜财富岛新版TS
 5 7,12,18 * * * ts-node /scripts/jd_cfd.ts >> /scripts/logs/jd_cfd.log 2>&1
+#京喜财富岛热气球挂后台TS
+5 7,12,18 * * * ts-node /scripts/jd_cfd_loop.ts >> /scripts/logs/jd_cfd_loop.log 2>&1

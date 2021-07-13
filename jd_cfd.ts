@@ -5,27 +5,33 @@
  * 领奖、任务
  */
 
-import {format} from 'date-fns';
-import {writeFileSync} from 'fs'
+import { format } from 'date-fns';
+import { writeFileSync } from 'fs';
 import axios from 'axios';
 import USER_AGENT from './TS_USER_AGENTS';
 
-// prettier-ignore
-const CryptoJS = require('crypto-js')
+const CryptoJS = require('crypto-js');
+
 // console.log('时间戳：', format(new Date(), 'yyyyMMddHHmmssSSS'));
 
-let appId: number = 10028, fingerprint: string | number, token: string, enCryptMethodJD: any;
-let cookie: string = '', cookiesArr: Array<string> = [], res: any = '', shareCodes: Array<string>;
+let appId: number = 10028,
+  fingerprint: string | number,
+  token: string,
+  enCryptMethodJD: any;
+let cookie: string = '',
+  cookiesArr: Array<string> = [],
+  res: any = '',
+  shareCodes: Array<string>;
 let homePageInfo: any;
 
-let UserName: string, index: number, isLogin: boolean, nickName: string
-
+let UserName: string, index: number, isLogin: boolean, nickName: string;
 !(async () => {
   await requestAlgo();
   await requireConfig();
+
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
-    UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
+    UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1]);
     index = i + 1;
     isLogin = true;
     nickName = '';
@@ -33,14 +39,14 @@ let UserName: string, index: number, isLogin: boolean, nickName: string
     console.log(`\n开始【京东账号${index}】${nickName || UserName}\n`);
     await startTask();
   }
-})()
+})();
 
 async function startTask() {
   for (let i = 0; i < 20; i++) {
     res = await speedUp(
       '_cfd_t,bizCode,dwEnv,ptag,source,strBuildIndex,strZone'
     );
-    // console.log(res)
+    console.log(res);
     console.log('今日热气球:', res.dwTodaySpeedPeople, '/', 20);
     await wait(2000);
   }
@@ -125,137 +131,156 @@ async function startTask() {
 }
 
 function speedUp(stk: string, params: Params = {}) {
-  return new Promise(async resolve => {
-    let url = `https://m.jingxi.com/jxbfd/user/SpeedUp?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&strBuildIndex=${['food', 'shop', 'sea', 'fun'][Math.floor(Math.random() * 4)]}&_ste=1&_=${Date.now()}&sceneval=2&_stk=${encodeURIComponent(stk)}`
+  return new Promise(async (resolve) => {
+    let url = `https://m.jingxi.com/jxbfd/user/SpeedUp?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&strBuildIndex=${
+      ['food', 'shop', 'sea', 'fun'][Math.floor(Math.random() * 4)]
+    }&_ste=1&_=${Date.now()}&sceneval=2&_stk=${encodeURIComponent(stk)}`;
     if (Object.keys(params).length !== 0) {
-      let key: (keyof Params)
+      let key: keyof Params;
       for (key in params) {
-        if (params.hasOwnProperty(key))
-          url += `&${key}=${params[key]}`
+        if (params.hasOwnProperty(key)) url += `&${key}=${params[key]}`;
       }
     }
-    url += '&h5st=' + decrypt(stk, url)
-    let {data} = await axios.get(url, {
+    url += '&h5st=' + decrypt(stk, url);
+    let { data } = await axios.get(url, {
       headers: {
-        'Host': 'm.jingxi.com',
-        'Referer': 'https://st.jingxi.com/',
-        'User-Agent': 'jdpingou;android;4.11.0;10;b21fede89fb4bc77;network/wifi;model/M2004J7AC;appBuild/17304;partner/xiaomi;;session/535;aid/b21fede89fb4bc77;oaid/dcb5f3e835497cc3;pap/JA2019_3111789;brand/Xiaomi;eu/8313831616035373;fv/7333732616631643;Mozilla/5.0 (Linux; Android 10; M2004J7AC Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/90.0.4430.91 Mobile Safari/537.36',
-        'Cookie': cookie
-      }
-    })
-    resolve(data)
-  })
+        Host: 'm.jingxi.com',
+        Referer: 'https://st.jingxi.com/',
+        'User-Agent':
+          'jdpingou;android;4.11.0;10;b21fede89fb4bc77;network/wifi;model/M2004J7AC;appBuild/17304;partner/xiaomi;;session/535;aid/b21fede89fb4bc77;oaid/dcb5f3e835497cc3;pap/JA2019_3111789;brand/Xiaomi;eu/8313831616035373;fv/7333732616631643;Mozilla/5.0 (Linux; Android 10; M2004J7AC Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/90.0.4430.91 Mobile Safari/537.36',
+        Cookie: cookie,
+      },
+    });
+    resolve(data);
+  });
 }
 
 interface Params {
-  strBuildIndex?: string,
-  ddwCostCoin?: number,
-  taskId?: number,
-  dwType?: string,
-  configExtra?: string
+  strBuildIndex?: string;
+  ddwCostCoin?: number;
+  taskId?: number;
+  dwType?: string;
+  configExtra?: string;
 }
 
 function api(fn: string, stk: string, params: Params = {}) {
-  return new Promise(async resolve => {
-    let url = `https://m.jingxi.com/jxbfd/${fn}?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&_ste=1&_=${Date.now()}&sceneval=2&_stk=${encodeURIComponent(stk)}`
+  return new Promise(async (resolve) => {
+    let url = `https://m.jingxi.com/jxbfd/${fn}?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&_ste=1&_=${Date.now()}&sceneval=2&_stk=${encodeURIComponent(
+      stk
+    )}`;
     if (['GetUserTaskStatusList', 'Award', 'DoTask'].includes(fn)) {
-      console.log('api2')
-      url = `https://m.jingxi.com/newtasksys/newtasksys_front/${fn}?strZone=jxbfd&bizCode=jxbfddch&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&_stk=${encodeURIComponent(stk)}&_ste=1&_=${Date.now()}&sceneval=2`
+      console.log('api2');
+      url = `https://m.jingxi.com/newtasksys/newtasksys_front/${fn}?strZone=jxbfd&bizCode=jxbfddch&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&_stk=${encodeURIComponent(
+        stk
+      )}&_ste=1&_=${Date.now()}&sceneval=2`;
     }
     if (Object.keys(params).length !== 0) {
-      let key: (keyof Params)
+      let key: keyof Params;
       for (key in params) {
-        if (params.hasOwnProperty(key))
-          url += `&${key}=${params[key]}`
+        if (params.hasOwnProperty(key)) url += `&${key}=${params[key]}`;
       }
     }
-    url += '&h5st=' + decrypt(stk, url)
-    let {data} = await axios.get(url, {
+    url += '&h5st=' + decrypt(stk, url);
+    let { data } = await axios.get(url, {
       headers: {
-        'Host': 'm.jingxi.com',
-        'Referer': 'https://st.jingxi.com/',
-        'User-Agent': 'jdpingou;android;4.11.0;10;b21fede89fb4bc77;network/wifi;model/M2004J7AC;appBuild/17304;partner/xiaomi;;session/535;aid/b21fede89fb4bc77;oaid/dcb5f3e835497cc3;pap/JA2019_3111789;brand/Xiaomi;eu/8313831616035373;fv/7333732616631643;Mozilla/5.0 (Linux; Android 10; M2004J7AC Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/90.0.4430.91 Mobile Safari/537.36',
-        'Cookie': cookie
-      }
-    })
-    resolve(data)
-  })
+        Host: 'm.jingxi.com',
+        Referer: 'https://st.jingxi.com/',
+        'User-Agent':
+          'jdpingou;android;4.11.0;10;b21fede89fb4bc77;network/wifi;model/M2004J7AC;appBuild/17304;partner/xiaomi;;session/535;aid/b21fede89fb4bc77;oaid/dcb5f3e835497cc3;pap/JA2019_3111789;brand/Xiaomi;eu/8313831616035373;fv/7333732616631643;Mozilla/5.0 (Linux; Android 10; M2004J7AC Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/90.0.4430.91 Mobile Safari/537.36',
+        Cookie: cookie,
+      },
+    });
+    resolve(data);
+  });
 }
 
 function mainTask(fn: string, stk: string, params: Params = {}) {
-  return new Promise(async resolve => {
-    let url = `https://m.jingxi.com/newtasksys/newtasksys_front/${fn}?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&_stk=${encodeURIComponent(stk)}&_ste=1&_=${Date.now()}&sceneval=2`
+  return new Promise(async (resolve) => {
+    let url = `https://m.jingxi.com/newtasksys/newtasksys_front/${fn}?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&_stk=${encodeURIComponent(
+      stk
+    )}&_ste=1&_=${Date.now()}&sceneval=2`;
     if (Object.keys(params).length !== 0) {
-      let key: (keyof Params)
+      let key: keyof Params;
       for (key in params) {
-        if (params.hasOwnProperty(key))
-          url += `&${key}=${params[key]}`
+        if (params.hasOwnProperty(key)) url += `&${key}=${params[key]}`;
       }
     }
-    url += '&h5st=' + decrypt(stk, url)
-    let {data} = await axios.get(url, {
+    url += '&h5st=' + decrypt(stk, url);
+    let { data } = await axios.get(url, {
       headers: {
         'Sec-Fetch-Dest': 'script',
         'X-Proxyman-Repeated-ID': '09920498',
-        'Accept': '*/*',
+        Accept: '*/*',
         'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         'X-Requested-With': 'com.jd.pingou',
-        'Referer': 'https://st.jingxi.com/',
-        'Host': 'm.jingxi.com',
-        'User-Agent': 'jdpingou;android;4.11.0;10;b21fede89fb4bc77;network/wifi;model/M2004J7AC;appBuild/17304;partner/xiaomi;;session/535;aid/b21fede89fb4bc77;oaid/dcb5f3e835497cc3;pap/JA2019_3111789;brand/Xiaomi;eu/8313831616035373;fv/7333732616631643;Mozilla/5.0 (Linux; Android 10; M2004J7AC Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/90.0.4430.91 Mobile Safari/537.36',
+        Referer: 'https://st.jingxi.com/',
+        Host: 'm.jingxi.com',
+        'User-Agent':
+          'jdpingou;android;4.11.0;10;b21fede89fb4bc77;network/wifi;model/M2004J7AC;appBuild/17304;partner/xiaomi;;session/535;aid/b21fede89fb4bc77;oaid/dcb5f3e835497cc3;pap/JA2019_3111789;brand/Xiaomi;eu/8313831616035373;fv/7333732616631643;Mozilla/5.0 (Linux; Android 10; M2004J7AC Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/90.0.4430.91 Mobile Safari/537.36',
         'Sec-Fetch-Site': 'same-site',
-        'Connection': 'close',
+        Connection: 'close',
         'Sec-Fetch-Mode': 'no-cors',
-        'Cookie': cookie
-      }
-    })
-    resolve(data)
-  })
+        Cookie: cookie,
+      },
+    });
+    resolve(data);
+  });
 }
 
 async function requestAlgo() {
   fingerprint = await generateFp();
-  return new Promise(async resolve => {
-    let {data} = await axios.post('https://cactus.jd.com/request_algo?g_ty=ajax', {
-      "version": "1.0",
-      "fp": fingerprint,
-      "appId": appId,
-      "timestamp": Date.now(),
-      "platform": "web",
-      "expandParams": ""
-    }, {
-      "headers": {
-        'Authority': 'cactus.jd.com',
-        'Pragma': 'no-cache',
-        'Cache-Control': 'no-cache',
-        'Accept': 'application/json',
-        'User-Agent': USER_AGENT,
-        'Content-Type': 'application/json',
-        'Origin': 'https://st.jingxi.com',
-        'Sec-Fetch-Site': 'cross-site',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Dest': 'empty',
-        'Referer': 'https://st.jingxi.com/',
-        'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7'
+  return new Promise(async (resolve) => {
+    let { data } = await axios.post(
+      'https://cactus.jd.com/request_algo?g_ty=ajax',
+      {
+        version: '1.0',
+        fp: fingerprint,
+        appId: appId,
+        timestamp: Date.now(),
+        platform: 'web',
+        expandParams: '',
       },
-    })
+      {
+        headers: {
+          Authority: 'cactus.jd.com',
+          Pragma: 'no-cache',
+          'Cache-Control': 'no-cache',
+          Accept: 'application/json',
+          'User-Agent': USER_AGENT,
+          'Content-Type': 'application/json',
+          Origin: 'https://st.jingxi.com',
+          'Sec-Fetch-Site': 'cross-site',
+          'Sec-Fetch-Mode': 'cors',
+          'Sec-Fetch-Dest': 'empty',
+          Referer: 'https://st.jingxi.com/',
+          'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7',
+        },
+      }
+    );
     if (data['status'] === 200) {
       token = data.data.result.tk;
       let enCryptMethodJDString = data.data.result.algo;
-      if (enCryptMethodJDString) enCryptMethodJD = new Function(`return ${enCryptMethodJDString}`)();
+      if (enCryptMethodJDString)
+        enCryptMethodJD = new Function(`return ${enCryptMethodJDString}`)();
     } else {
-      console.log(`fp: ${fingerprint}`)
-      console.log('request_algo 签名参数API请求失败:')
+      console.log(`fp: ${fingerprint}`);
+      console.log('request_algo 签名参数API请求失败:');
     }
-    resolve(200)
-  })
+    resolve(200);
+  });
 }
 
 function decrypt(stk: string, url: string) {
-  const timestamp = (format(new Date(), 'yyyyMMddhhmmssSSS'))
+  const timestamp = format(new Date(), 'yyyyMMddhhmmssSSS');
   let hash1: string;
   if (fingerprint && token && enCryptMethodJD) {
-    hash1 = enCryptMethodJD(token, fingerprint.toString(), timestamp.toString(), appId.toString(), CryptoJS).toString(CryptoJS.enc.Hex);
+    hash1 = enCryptMethodJD(
+      token,
+      fingerprint.toString(),
+      timestamp.toString(),
+      appId.toString(),
+      CryptoJS
+    ).toString(CryptoJS.enc.Hex);
   } else {
     const random = '5gkjB6SpmC9s';
     token = `tk01wcdf61cb3a8nYUtHcmhSUFFCfddDPRvKvYaMjHkxo6Aj7dhzO+GXGFa9nPXfcgT+mULoF1b1YIS1ghvSlbwhE0Xc`;
@@ -266,77 +291,94 @@ function decrypt(stk: string, url: string) {
   }
   let st: string = '';
   stk.split(',').map((item, index) => {
-    st += `${item}:${getQueryString(url, item)}${index === stk.split(',').length - 1 ? '' : '&'}`;
-  })
-  const hash2 = CryptoJS.HmacSHA256(st, hash1.toString()).toString(CryptoJS.enc.Hex);
-  return encodeURIComponent(["".concat(timestamp.toString()), "".concat(fingerprint.toString()), "".concat(appId.toString()), "".concat(token), "".concat(hash2)].join(";"))
+    st += `${item}:${getQueryString(url, item)}${
+      index === stk.split(',').length - 1 ? '' : '&'
+    }`;
+  });
+  const hash2 = CryptoJS.HmacSHA256(st, hash1.toString()).toString(
+    CryptoJS.enc.Hex
+  );
+  return encodeURIComponent(
+    [
+      ''.concat(timestamp.toString()),
+      ''.concat(fingerprint.toString()),
+      ''.concat(appId.toString()),
+      ''.concat(token),
+      ''.concat(hash2),
+    ].join(';')
+  );
 }
 
 function requireConfig() {
-  return new Promise<void>(resolve => {
-    console.log('开始获取配置文件\n')
+  return new Promise<void>((resolve) => {
+    console.log('开始获取配置文件\n');
     const jdCookieNode = require('./jdCookie.js');
-    Object.keys(jdCookieNode).forEach((item, i) => {
+    Object.keys(jdCookieNode).forEach((item) => {
       if (jdCookieNode[item]) {
-        cookiesArr.push(jdCookieNode[item])
+        cookiesArr.push(jdCookieNode[item]);
       }
-    })
-    console.log(`共${cookiesArr.length}个京东账号\n`)
-    resolve()
-  })
+    });
+    console.log(`共${cookiesArr.length}个京东账号\n`);
+    resolve();
+  });
 }
 
 async function TotalBean() {
-    return axios.get('https://me-api.jd.com/user_new/info/GetJDUserInfoUnion', {
+  return axios
+    .get('https://me-api.jd.com/user_new/info/GetJDUserInfoUnion', {
       headers: {
-        Host: "me-api.jd.com",
-        Connection: "keep-alive",
+        Host: 'me-api.jd.com',
+        Connection: 'keep-alive',
         Cookie: cookie,
-        "User-Agent": USER_AGENT,
-        "Accept-Language": "zh-cn",
-        "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
-        "Accept-Encoding": "gzip, deflate, br"
-      }
-    }).then(res => {
+        'User-Agent': USER_AGENT,
+        'Accept-Language': 'zh-cn',
+        Referer: 'https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&',
+        'Accept-Encoding': 'gzip, deflate, br',
+      },
+    })
+    .then((res) => {
       if (res.data) {
-        let data = res.data
-        if (data['retcode'] === "1001") {
+        let data = res.data;
+        if (data['retcode'] === '1001') {
           isLogin = false; //cookie过期
           return;
         }
-        if (data['retcode'] === "0" && data['data'] && data.data.hasOwnProperty("userInfo")) {
+        if (
+          data['retcode'] === '0' &&
+          data['data'] &&
+          data.data.hasOwnProperty('userInfo')
+        ) {
           nickName = data.data.userInfo.baseInfo.nickname;
           return nickName;
         }
       } else {
         console.log('京东服务器返回空数据');
       }
-    }).catch(e => {
-      console.log('Error:', e)
     })
+    .catch((e) => {
+      console.log('Error:', e);
+    });
 }
 
 function generateFp() {
-  let e = "0123456789";
+  let e = '0123456789';
   let a = 13;
   let i = '';
-  for (; a--;)
-    i += e[Math.random() * e.length | 0];
-  return (i + Date.now()).slice(0, 16)
+  for (; a--; ) i += e[(Math.random() * e.length) | 0];
+  return (i + Date.now()).slice(0, 16);
 }
 
 function getQueryString(url: string, name: string) {
-  let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
   let r = url.split('?')[1].match(reg);
   if (r != null) return unescape(r[2]);
   return '';
 }
 
 function wait(t: number) {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     setTimeout(() => {
-      resolve()
-    }, t)
-  })
+      resolve();
+    }, t);
+  });
 }
-
