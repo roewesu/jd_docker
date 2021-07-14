@@ -5,7 +5,7 @@
 [task_local]
 20 12,14 * * *
 */
-const $ = new Env( '柠檬众筹好物上新' );
+const $ = new Env('柠檬众筹好物上新');
 const notify = $.isNode() ? require( './sendNotify' ) : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require( './jdCookie.js' ) : '';

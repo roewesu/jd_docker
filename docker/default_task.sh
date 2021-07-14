@@ -12,7 +12,7 @@ function initPythonEnv() {
   #合并
   cd /scripts/docker/bot
   pip3 install --upgrade pip
-  pip3 install -r requirements.txt
+  pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
   python3 setup.py install
 }
 

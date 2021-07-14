@@ -18,6 +18,8 @@ else
   git -C /scripts pull --rebase
   echo "npm install 安装最新依赖"
   npm install --prefix /scripts
+  echo "npm install 安装typescript支持"
+  npm install -g typescript ts-node
 fi
 ) || exit 0
 
