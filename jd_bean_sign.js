@@ -2,7 +2,7 @@
 京东多合一签到,自用,可N个京东账号
 活动入口：各处的签到汇总
 Node.JS专用
-IOS软件用户请使用 https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
+IOS软件用户请使用 https://raw.githubusercontent.com/zhaozhanzhan/jsdelivrCDN/main/shareCodes/JD_DailyBonus.js
 更新时间：2021-5-6
 推送通知默认简洁模式(多账号只发送一次)。如需详细通知，设置环境变量 JD_BEAN_SIGN_NOTIFY_SIMPLE 为false即可(N账号推送N次通知)。
 Modified From github https://github.com/ruicky/jd_sign_bot
@@ -116,9 +116,9 @@ async function downFile () {
   let url = '';
   await downloadUrl();
   if ($.body) {
-    url = 'https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js';
+    url = 'https://raw.githubusercontent.com/zhaozhanzhan/jsdelivrCDN/main/shareCodes/JD_DailyBonus.js';
   } else {
-    url = 'https://cdn.jsdelivr.net/gh/NobyDa/Script@master/JD-DailyBonus/JD_DailyBonus.js';
+    url = 'https://cdn.jsdelivr.net/gh/zhaozhanzhan/jsdelivrCDN@main/shareCodes/JD_DailyBonus.js';
   }
   try {
     const options = { }
@@ -259,7 +259,7 @@ function TotalBean () {
 //     })
 //   })
 // }
-function downloadUrl(url = 'https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js') {
+function downloadUrl(url = 'https://raw.githubusercontent.com/zhaozhanzhan/jsdelivrCDN/main/shareCodes/JD_DailyBonus.js') {
   return new Promise(resolve => {
     const options = { url, "timeout": 10000 };
     if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
@@ -279,7 +279,7 @@ function downloadUrl(url = 'https://raw.githubusercontent.com/NobyDa/Script/mast
         if (err) {
           // console.log(`${JSON.stringify(err)}`)
           console.log(`检测到您当前网络环境不能访问外网,将使用jsdelivr CDN下载JD_DailyBonus.js文件`);
-          await $.http.get({url: `https://purge.jsdelivr.net/gh/NobyDa/Script@master/JD-DailyBonus/JD_DailyBonus.js`, timeout: 10000}).then((resp) => {
+          await $.http.get( { url: `https://purge.jsdelivr.net/gh/zhaozhanzhan/jsdelivrCDN@main/shareCodes/JD_DailyBonus.js`, timeout: 10000}).then((resp) => {
             if (resp.statusCode === 200) {
               let { body } = resp;
               body = JSON.parse(body);
