@@ -182,3 +182,7 @@
 5 * * * * node /scripts/jd_cfd_loop.js >> /scripts/logs/jd_cfd_loop.log 2>&1
 #宠汪汪偷好友积分与狗粮
 3 */2 * * * node /scripts/jd_joy_steal.js >> /scripts/logs/jd_joy_steal.log 2>&1
+#柠檬特物Z密室大逃脱
+30 0 * * * node /scripts/jd_twmsdtt.js >> /scripts/logs/jd_twmsdtt.log 2>&1
+#柠檬特务Z行动-星小店
+20 0 * * * node /scripts/jd_twzStar.js >> /scripts/logs/jd_twzStar.log 2>&1
