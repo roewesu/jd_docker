@@ -186,3 +186,7 @@
 30 0 * * * node /scripts/jd_twmsdtt.js >> /scripts/logs/jd_twmsdtt.log 2>&1
 #柠檬特务Z行动-星小店
 20 0 * * * node /scripts/jd_twzStar.js >> /scripts/logs/jd_twzStar.log 2>&1
+#柠檬发财翻翻乐
+1 0-23/1 * 6 * node /scripts/jd_fcffl.js >> /scripts/logs/jd_fcffl.log 2>&1
+#柠檬发财大赢家
+0,2 0 * * * node /scripts/jd_fcdyj.js >> /scripts/logs/jd_fcdyj.log 2>&1
