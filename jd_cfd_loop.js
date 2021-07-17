@@ -51,20 +51,15 @@ $.appId = 10028;
         $.index = i + 1;
         $.nickName = '';
         $.isLogin = true;
-        $.nickName = '';
         await TotalBean();
         console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
         if (!$.isLogin) {
-          $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
-  
-          if ($.isNode()) {
-            await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-          }
+          $.log($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"})
           continue
         }
         $.info = {}
         await cfd();
-        let time = getRndInteger(2000, 5000)
+        let time = process.env.CFD_LOOP_SLEEPTIME ? process.env.CFD_LOOP_SLEEPTIME : 2000
         await $.wait(time)
       }
     }
@@ -89,6 +84,70 @@ async function cfd() {
   }
 }
 
+// 卖贝壳
+async function querystorageroom() {
+  return new Promise(async (resolve) => {
+    $.get(taskUrl(`story/querystorageroom`), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} querystorageroom API请求失败，请检查网路重试`)
+        } else {
+          data = JSON.parse(data);
+          console.log(`\n卖贝壳`)
+          let bags = []
+          for (let key of Object.keys(data.Data.Office)) {
+            let vo = data.Data.Office[key]
+            bags.push(vo.dwType)
+            bags.push(vo.dwCount)
+          }
+          if (bags.length !== 0) {
+            let strTypeCnt = ''
+            for (let j = 0; j < bags.length; j++) {
+              if (j % 2 === 0) {
+                strTypeCnt += `${bags[j]}:`
+              } else {
+                strTypeCnt += `${bags[j]}|`
+              }
+            }
+            await $.wait(1000)
+            await sellgoods(`strTypeCnt=${strTypeCnt}&dwSceneId=1`)
+          } else {
+            console.log(`背包是空的，快去捡贝壳吧\n`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+function sellgoods(body) {
+  return new Promise((resolve) => {
+    $.get(taskUrl(`story/sellgoods`, body), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} sellgoods API请求失败，请检查网路重试`)
+        } else {
+          data = JSON.parse(data);
+          if (data.iRet === 0) {
+            console.log(`贝壳出售成功：获得${data.Data.ddwCoin}金币 ${data.Data.ddwMoney}财富\n`)
+          } else {
+            console.log(`贝壳出售失败：${data.sErrMsg}\n`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+
 // 捡贝壳
 async function queryshell() {
   return new Promise(async (resolve) => {
@@ -98,12 +157,14 @@ async function queryshell() {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} queryshell API请求失败，请检查网路重试`)
         } else {
-          data = JSON.parse(data);
-          for (let key of Object.keys(data.Data.NormShell)) {
-            let vo = data.Data.NormShell[key]
-            for (let j = 0; j < vo.dwNum; j++) {
-              await pickshell(`dwType=${vo.dwType}`)
-              await $.wait(2000)
+          data = JSON.parse( data );
+          if ( data && data.Data && data.Data.NormShell) {
+            for (let key of Object.keys(data.Data.NormShell)) {
+              let vo = data.Data.NormShell[key]
+              for (let j = 0; j < vo.dwNum; j++) {
+                await $.wait(1000)
+                await pickshell(`dwType=${vo.dwType}`)
+              }
             }
           }
           console.log('')
@@ -116,9 +177,9 @@ async function queryshell() {
     })
   })
 }
-function pickshell(body) {
-  return new Promise((resolve) => {
-    $.get(taskUrl(`story/pickshell`, body), (err, resp, data) => {
+async function pickshell(body) {
+  return new Promise(async (resolve) => {
+    $.get(taskUrl(`story/pickshell`, body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -142,7 +203,15 @@ function pickshell(body) {
             default:
               break
           }
-          console.log(`捡贝壳：捡到了${dwName}`)
+          if (data.iRet === 0) {
+            console.log(`捡贝壳成功：捡到了${dwName}`)
+          } else if (data.iRet === 5403 || data.sErrMsg === '这种小贝壳背包放不下啦，先去卖掉一些吧~') {
+            console.log(`捡贝壳失败：${data.sErrMsg}`)
+            await $.wait(1000)
+            await querystorageroom()
+          } else {
+            console.log(`捡贝壳失败：${data.sErrMsg}`)
+          }
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -163,7 +232,11 @@ async function speedUp() {
           console.log(`${$.name} SpeedUp API请求失败，请检查网路重试`)
         } else {
           data = JSON.parse(data);
-          console.log(`今日热气球已接待 ${data.dwTodaySpeedPeople} 人\n`)
+          if (data.iRet === 0) {
+            console.log(`热气球接客成功：已接待 ${data.dwTodaySpeedPeople} 人\n`)
+          } else {
+            console.log(`热气球接客失败：${data.sErrMsg}\n`)
+          }
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -196,7 +269,7 @@ function getUserInfo(showInvite = true) {
             dwLandLvl,
             Fund = {}
           } = data;
-          const dwIsJxNewUser = JxUserWelfare["dwIsJxNewUser"]
+          const dwIsJxNewUser = JxUserWelfare ? JxUserWelfare[ "dwIsJxNewUser" ] : 0 ;
           if (showInvite) {
             console.log(`\n获取用户信息：${sErrMsg}\n${$.showLog ? data : ""}`);
             console.log(`\n当前等级:${dwLandLvl},金币:${ddwCoinBalance},财富值:${ddwRichBalance}\n`)
@@ -234,11 +307,6 @@ function getUserInfo(showInvite = true) {
       }
     });
   });
-}
-
-// 随机数
-function getRndInteger(min, max) {
-  return Math.floor(Math.random() * (max - min) ) + min;
 }
 
 function taskUrl(function_path, body) {
@@ -304,9 +372,9 @@ function showMsg() {
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
-      url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
+      url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
       headers: {
-        Host: "me-api.jd.com",
+        Host: "wq.jd.com",
         Accept: "*/*",
         Connection: "keep-alive",
         Cookie: cookie,
@@ -323,11 +391,11 @@ function TotalBean() {
         } else {
           if (data) {
             data = JSON.parse(data);
-            if (data['retcode'] === "1001") {
+            if (data['retcode'] === 1001) {
               $.isLogin = false; //cookie过期
               return;
             }
-            if (data['retcode'] === "0" && data.data && data.data.hasOwnProperty("userInfo")) {
+            if (data['retcode'] === 0 && data.data && data.data.hasOwnProperty("userInfo")) {
               $.nickName = data.data.userInfo.baseInfo.nickname;
             }
           } else {
