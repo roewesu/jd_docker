@@ -1,93 +1,22 @@
-/*************************
+/*
 
 京东多合一签到脚本
 
-更新时间: 2021.06.17 23:20 v2.0.5
+更新时间: 2021.07.17 23:20 v2.0.5
 有效接口: 30+
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 电报频道: @NobyDa 
 问题反馈: @NobyDa_bot 
 如果转载: 请注明出处
 
-*************************
-【 JSbox, Node.js 说明 】 :
-*************************
+*/
 
-开启抓包app后, Safari浏览器登录 https://bean.m.jd.com/bean/signIndex.action 点击签到并且出现签到日历后, 返回抓包app搜索关键字 functionId=signBean 复制请求头Cookie填入以下Key处的单引号内即可 */
-
-var Key = 'wxa_level=1; cid=9; jxsid=16250488925131570167; webp=1; __jda=122270672.1625048892803257211763.1625048892.1625048892.1625048892.1; __jdv=122270672|direct|-|none|-|1625048892804; __jdc=122270672; mba_muid=1625048892803257211763; visitkey=47113095845486445; autoOpenApp_downCloseDate_auto=1625048893402_10800000; downloadAppPlugIn_downCloseDate=1625048969933_10800000; shshshfp=593d6c9e4f345176264f439f1c6ed11d; shshshfpa=e480776e-0bee-5fb1-87a2-993ad3740379-1625048973; shshshsID=b7f97aa947f3f61e2b2f5890aec06b11_1_1625048973611; shshshfpb=w8JzCT1I+AcOJh65Cw1wCmw==; 3AB9D23F7A4B3C9B=RUFW7UNJNIESNXLMCU3DLL2OGWQ3MBYZYW42J52JXBC6OISULFKYFSVY5IS2V7DDPGZMYU656HJNX4GKRNMUIOA3A4; jcap_dvzw_fp=dWkpm_QFA8wY8KC0wCq8PQF8kwntmuKja5e_TYIpXSXuHxDJutqF42MHhTq0Q5n9d5iKuQ==; TrackerID=iWJUwjK-81iRL2tVuOOJ8IFWEcVi13rMMgsJCjn12I7mWG_aSLYMugPbB5X6iEjyThFIvC0epnLDifzHsejsIkpEGSI1TXNMa_nR_14TkmFyJMfq5G6xbIivRCTCtd6CeiaFnelDutNNIbYsSJlkYw; pt_key=AAJg3EneADByqK7Jb6mKbDtxA6NGhzP19NMMqDqYQOyKRNZQxBlFFlSLHjZN77ETtuFz2NSoKwg; pt_pin=jd_64006537c5a1d; pt_token=6z6ut5at; pwdt_id=jd_64006537c5a1d; sfstoken=tk01mc7ec1c49a8sM3gzeDFYQUlsUVAnUGnLuTUrtzLPhZXsP9R4TuR7qa4OqIcQN20JFVXtUFOrbV3GoYQQlB1oFla+; whwswswws=; retina=1; wqmnx1=MDEyNjM3MGgvLi9lYXNsPTE1TS9QQ28xbGMgZTAgLEdWLyAvIC8zc2EyM1dDKSFS; __jdb=122270672.3.1625048892803257211763|1.1625048892; mba_sid=16250488928069819670258841758.3'; //单引号内自行填写您抓取的Cookie
+var Key = 'wxa_level=1; jxsid=16250440890049477623; webp=1; __jda=122270672.16250440892961681947278.1625044089.1625044089.1625044089.1; __jdv=122270672|direct|-|none|-|1625044089299; __jdc=122270672; mba_muid=16250440892961681947278; visitkey=35367017420307670; autoOpenApp_downCloseDate_auto=1625044089922_10800000; downloadAppPlugIn_downCloseDate=1625044092282_86400000; shshshfp=5fa953d4ed69fa4cd2d74db53ef94368; shshshfpa=7a7e764c-fed5-6f7d-694a-302af59cd926-1625044095; shshshsID=089a64af151867dec748a7d91959c20c_1_1625044095186; shshshfpb=ueriTfQAij4OqW/polRMSWA==; 3AB9D23F7A4B3C9B=XDYVLHHFF3DCB5KIOAZ4IU6KBWWSUTSJFYKCLWJUBU3ZO6XJFNNIJPNIAUZVLT2M3AHQYMFTWNXMTL22ZOCLNPEQQQ; jcap_dvzw_fp=3euGa1nYISRyNxKCruCNeBMamp6c7Yu9Sn6BdzSXToj05Zs-EMMiHzSqojKdU7whbIfImg==; TrackerID=_6SdW8YIsdMK7ELOwlLSLnbc0i2T182XcbGhA3BxIbTChm0Yj9uLC2JYHrvVH8K4Ki0XJQHj7HYjUpqfNiNymV6khWN80vmG8w5ZXC9lSaj5b_NkhRnYhA4sIu8r27wdRenMY8W6Sn7BGrsacvOKsw; pt_key=AAJg3DSdADAugw35RxIwpCyDZQmRcE2CvCAwH2Y7x_oyF8RsF8w9_i5EHt3tZPxm2_oGAsb_FvU; pt_pin=jd_43da48a41c265; pt_token=fvn24ii6; pwdt_id=jd_43da48a41c265; sfstoken=tk01m811e1b8aa8sM3gxUEhEWHJiLWkMs2+7lT14K+WXyl/wLDKDXb3hmw6TRUK+p58I/juGDBIx7YbKzbzswNiMUXQa; whwswswws=; retina=1; cid=9; wqmnx1=MDEyNjM4MXRvLmRlP2wmMDdsKCBvM2tTbC81LGVyLmk0aTNZbkIxVUYhSA==; __wga=1625044130234.1625044130234.1625044130234.1625044130234.1.1; PPRD_P=UUID.16250440892961681947278; jxsid_s_t=1625044130303; jxsid_s_u=https://home.m.jd.com/myJd/newhome.action; sc_width=375; __jdb=122270672.3.16250440892961681947278|1.1625044089; mba_sid=16250440893006571785177140290.3'; //单引号内自行填写您抓取的Cookie
 
 var DualKey = ''; //如需双账号签到,此处单引号内填写抓取的"账号2"Cookie, 否则请勿填写
 
 var OtherKey = ''; //第三账号或以上的Cookie json串数据, 以下样例为第三第四账号：var OtherKey = '[{"cookie":"pt_key=xxxxxx;pt_pin=yyyyyy"},{"cookie":"pt_key=xxxxxx;pt_pin=yyyyyy"}]'
 
-/* 注1: 以上选项仅针对于JsBox或Node.js, 如果使用QX,Surge,Loon, 请使用脚本获取Cookie.
-   注2: 双账号用户抓取"账号1"Cookie后, 请勿点击退出账号(可能会导致Cookie失效), 需清除浏览器资料或更换浏览器登录"账号2"抓取.
-   注3: 如果复制的Cookie开头为"Cookie: "请把它删除后填入.
-   注4: 如果使用QX,Surge,Loon并获取Cookie后, 再重复填写以上选项, 则签到优先读取以上Cookie.
-   注5: 如果使用Node.js, 需自行安装'request'模块. 例: npm install request -g
-   注6: Node.js或JSbox环境下已配置数据持久化, 填写Cookie运行一次后, 后续更新脚本无需再次填写, 待Cookie失效后重新抓取填写即可.
-
-*************************
-【 QX, Surge, Loon 说明 】 :
-*************************
-
-初次使用时, app配置文件添加脚本配置,并启用Mitm后, Safari浏览器打开登录 https://bean.m.jd.com/bean/signIndex.action ,点击签到并且出现签到日历后, 如果通知获得cookie成功, 则可以使用此签到脚本。 注: 请勿在京东APP内获取!!!
-
-由于cookie的有效性(经测试网页Cookie有效周期最长31天)，如果脚本后续弹出cookie无效的通知，则需要重复上述步骤。 
-签到脚本将在每天的凌晨0:05执行, 您可以修改执行时间。 因部分接口京豆限量领取, 建议调整为凌晨签到。
-
-BoxJs或QX Gallery订阅地址: https://raw.githubusercontent.com/NobyDa/Script/master/NobyDa_BoxJs.json
-
-*************************
-【 配置多京东账号签到说明 】 : 
-*************************
-
-正确配置QX、Surge、Loon后, 并使用此脚本获取"账号1"Cookie成功后, 请勿点击退出账号(可能会导致Cookie失效), 需清除浏览器资料或更换浏览器登录"账号2"获取即可; 账号3或以上同理.
-注: 如需清除所有Cookie, 您可开启脚本内"DeleteCookie"选项 (第96行)
-
-*************************
-【Surge 4.2+ 脚本配置】:
-*************************
-
-[Script]
-京东多合一签到 = type=cron,cronexp=5 0 * * *,wake-system=1,timeout=60,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
-
-获取京东Cookie = type=http-request,pattern=https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
-
-[MITM]
-hostname = api.m.jd.com
-
-*************************
-【Loon 2.1+ 脚本配置】:
-*************************
-
-[Script]
-cron "5 0 * * *" tag=京东多合一签到, script-path=https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
-
-http-request https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean tag=获取京东Cookie, script-path=https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
-
-[MITM]
-hostname = api.m.jd.com
-
-*************************
-【 QX 1.0.10+ 脚本配置 】 :
-*************************
-
-[task_local]
-# 京东多合一签到
-# 注意此为远程路径, 低版本用户请自行调整为本地路径.
-5 0 * * * https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js, tag=京东多合一签到, img-url=https://raw.githubusercontent.com/NobyDa/mini/master/Color/jd.png,enabled=true
-
-[rewrite_local]
-# 获取京东Cookie. 
-# 注意此为远程路径, 低版本用户请自行调整为本地路径.
-https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean url script-request-header https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
-
-[mitm]
-hostname = api.m.jd.com
-
-*************************/
 
 var LogDetails = false; //是否开启响应日志, true则开启
 
@@ -102,6 +31,13 @@ var ReDis = false; //是否移除所有禁用列表, true则开启. 适用于触
 var out = 0; //接口超时退出, 用于可能发生的网络不稳定, 0则关闭. 如QX日志出现大量"JS Context timeout"后脚本中断时, 建议填写6000
 
 var $nobyda = nobyda();
+
+const Faker = require('./jdSignValidator')
+const zooFaker = require('./jdJrValidator')
+let fp = '', eid = ''
+
+$nobyda.get = zooFaker.injectToRequest2($nobyda.get.bind($nobyda), 'channelSign')
+$nobyda.post = zooFaker.injectToRequest2($nobyda.post.bind($nobyda), 'channelSign')
 
 async function all() {
   merge = {};
@@ -828,23 +764,39 @@ function JDUserSign1(s, key, title, body) {
 async function JDUserSign2(s, key, title, tid) {
   await new Promise(resolve => {
     $nobyda.get({
-      url: `https://jdjoy.jd.com/api/turncard/channel/detail?turnTableId=${tid}&invokeKey=NRp8OPxZMFXmGkaE`,
+      url: `https://jdjoy.jd.com/api/turncard/channel/detail?turnTableId=${tid}&invokeKey=qRKHmL4sna8ZOP9F`,
       headers: {
         Cookie: KEY
       }
-    }, function(error, response, data) {
-      resolve()
+    }, async function(error, response, data) {
+      try {
+        if(data) {
+          data = JSON.parse(data);
+          if (data.success && data.data) {
+            data = data.data
+            if (!data.hasSign) {
+              let ss = await Faker.getBody(`https://prodev.m.jd.com/mall/active/${tid}/index.html`)
+              fp = ss.fp
+              await getEid(ss, title)
+            }
+          }
+        }
+      } catch(eor) {
+        $nobyda.AnError(title, key, eor, response, data)
+      } finally {
+        resolve()
+      }
     })
     if (out) setTimeout(resolve, out + s)
   });
   return new Promise(resolve => {
     setTimeout(() => {
       const JDUrl = {
-        url: 'https://jdjoy.jd.com/api/turncard/channel/sign?invokeKey=NRp8OPxZMFXmGkaE',
+        url: 'https://jdjoy.jd.com/api/turncard/channel/sign?invokeKey=qRKHmL4sna8ZOP9F',
         headers: {
           Cookie: KEY
         },
-        body: `turnTableId=${tid}`
+        body: `turnTableId=${tid}&fp=${fp}&eid=${eid}`
       };
       $nobyda.post(JDUrl, function(error, response, data) {
         try {
@@ -1512,12 +1464,44 @@ function TotalSteel() {
   });
 }
 
+function getEid(ss, title) {
+  return new Promise(resolve => {
+    const options = {
+      url: `https://gia.jd.com/fcf.html?a=${ss.a}`,
+      body: `d=${ss.d}`,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+      }
+    }
+    $nobyda.post(options, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${title} 登录: API查询请求失败 ‼️‼️`)
+          throw new Error(err);
+        } else {
+          if (data.indexOf("*_*") > 0) {
+            data = data.split("*_*", 2);
+            data = JSON.parse(data[1]);
+            eid = data.eid
+          } else {
+            console.log(`京豆api返回数据为空，请检查自身原因`)
+          }
+        }
+      } catch (eor) {
+        $nobyda.AnError(eor, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+
 function TotalBean() {
   merge.TotalBean = {};
   return new Promise(resolve => {
     if (disable("Qbear")) return resolve()
     $nobyda.get({
-      url: 'https://me-api.jd.com/user_new/info/GetJDUserInfoUnion',
+      url: 'https://me-api.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2',
       headers: {
         Cookie: KEY
       }
