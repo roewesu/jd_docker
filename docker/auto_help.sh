@@ -70,13 +70,13 @@ exportSharecode() {
 autoHelp() {
   if [ ${parameter} == "collect" ]; then
 
-    #    echo "收集助力码"
-    collectSharecode ${1} ${2} ${3}
+    echo ""
+    # collectSharecode ${1} ${2} ${3}
 
   elif [ ${parameter} == "export" ]; then
 
-    #    echo "导出助力码"
-    exportSharecode ${1} ${2} ${3}
+    echo ""
+    # exportSharecode ${1} ${2} ${3}
   fi
 }
 
