@@ -192,3 +192,5 @@
 0,2 0 * * * node /scripts/jd_fcdyj.js >> /scripts/logs/jd_fcdyj.log 2>&1
 #京东签到图形验证
 10 9 * * * node /scripts/jd_signGraphics.js >> /scripts/logs/jd_signGraphics.log 2>&1
+#柠檬伊利云养牛
+0 12 * * * node /scripts/jd_ylyn.js >> /scripts/logs/jd_ylyn.log 2>&1
