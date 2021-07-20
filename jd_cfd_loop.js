@@ -82,7 +82,7 @@ async function cfd () {
     }
     await $.wait( 2000 )
     await speedUp()
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 5; i++) {
       await speedUp()
       await $.wait( 500 )
     }
