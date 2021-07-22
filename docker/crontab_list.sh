@@ -25,7 +25,7 @@
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
 # 东东超市兑换奖品
-0,30 0 * * * node /scripts/jd_blueCoin.js >> /scripts/logs/jd_blueCoin.log 2>&1
+59 23 * * * node /scripts/jd_blueCoin.js >> /scripts/logs/jd_blueCoin.log 2>&1
 # 摇京豆
 6 0,23 * * * node /scripts/jd_club_lottery.js >> /scripts/logs/jd_club_lottery.log 2>&1
 # 东东农场
@@ -180,6 +180,8 @@
 5 * * * * node /scripts/jd_cfd.js >> /scripts/logs/jd_cfd.log 2>&1
 #京喜财富岛热气球挂后台
 5 * * * * node /scripts/jd_cfd_loop.js >> /scripts/logs/jd_cfd_loop.log 2>&1
+#京喜财富岛提现
+59 11,12,23 * * * node /scripts/jd_cfdtx.js >> /scripts/logs/jd_cfdtx.log 2>&1
 #宠汪汪偷好友积分与狗粮
 3 */2 * * * node /scripts/jd_joy_steal.js >> /scripts/logs/jd_joy_steal.log 2>&1
 #柠檬特物Z密室大逃脱
@@ -194,3 +196,5 @@
 10 9 * * * node /scripts/jd_signGraphics.js >> /scripts/logs/jd_signGraphics.log 2>&1
 #柠檬伊利云养牛
 0 12 * * * node /scripts/jd_ylyn.js >> /scripts/logs/jd_ylyn.log 2>&1
+#全民抢京豆
+08 2 * * * node /scripts/jd_qjd.js >> /scripts/logs/jd_qjd.log 2>&1
