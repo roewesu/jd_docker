@@ -21,7 +21,6 @@ const $ = new Env('京东试用')
 const selfDomain = 'https://try.m.jd.com'
 let allGoodList = []
 let notifyMsg = ''
-let JD_TRY = 'true'
 // default params
 const args = {
     // 是否通知
@@ -66,16 +65,10 @@ const typeMap = {
     "30天试用": "5",
 }
 
-if ( process.env.JD_TRY ) {
-    JD_TRY = process.env.JD_TRY
-} else {
-    JD_TRY = 'true'
-}
-
 !(async () => {
     console.log(`\n本脚本默认不运行，也不建议运行\n如需运行请自行添加环境变量：JD_TRY，值填：true\n`)
     await $.wait(1000)
-    if (JD_TRY === 'true') {
+    if (process.env.JD_TRY && process.env.JD_TRY === 'true') {
         await requireConfig()
         if (!$.cookiesArr[0]) {
             $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
