@@ -200,3 +200,5 @@
 08 2 * * * node /scripts/jd_qjd.js >> /scripts/logs/jd_qjd.log 2>&1
 #MM领京豆
 21 9 * * * node /scripts/jd_ljd.js >> /scripts/logs/jd_ljd.log 2>&1
+#粉丝互动
+1 8 * * * node /scripts/jd_wxFans.js >> /scripts/logs/jd_wxFans.log 2>&1
