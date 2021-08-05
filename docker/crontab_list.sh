@@ -198,3 +198,5 @@
 0 12 * * * node /scripts/jd_ylyn.js >> /scripts/logs/jd_ylyn.log 2>&1
 #全民抢京豆
 08 2 * * * node /scripts/jd_qjd.js >> /scripts/logs/jd_qjd.log 2>&1
+#MM领京豆
+21 9 * * * node /scripts/jd_ljd.js >> /scripts/logs/jd_ljd.log 2>&1
