@@ -1,5 +1,5 @@
 
-const $ = new Env( '京享值PK' );
+const $ = new Env('京享值PK');
 
 ! function ( n ) {
     "use strict";
