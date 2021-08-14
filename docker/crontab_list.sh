@@ -167,7 +167,7 @@
 #柠檬众筹许愿池
 0 8,12 * * * node /scripts/jd_wish.js >> /scripts/logs/jd_wish.log 2>&1
 #送豆得豆
-45 4 * * * node /scripts/jd_senbeans.js >> /scripts/logs/jd_senbeans.log 2>&1
+45 1,12 * * * node /scripts/jd_senbeans.js >> /scripts/logs/jd_senbeans.log 2>&1
 #柠檬旺财乐园新手上路版
 */5 * * * * node /scripts/jd_joyPark.js >> /scripts/logs/jd_joyPark.log 2>&1
 #燃动夏季
