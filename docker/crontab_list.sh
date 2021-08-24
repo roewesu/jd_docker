@@ -56,6 +56,8 @@
 20 9 * * * node /scripts/jd_bean_month_change.js >> /scripts/logs/jd_bean_month_change.log 2>&1
 # 京豆日资产变动通知
 20 8 * * * node /scripts/jd_bean_day_change.js >> /scripts/logs/jd_bean_day_change.log 2>&1
+# 京东日资产变动加强版
+30 8 * * * node /scripts/jd_bean_day_change_pro.js >> /scripts/logs/jd_bean_day_change_pro.log 2>&1
 # 京东抽奖机
 0 0,12,23 * * * node /scripts/jd_lotteryMachine.js >> /scripts/logs/jd_lotteryMachine.log 2>&1
 # 京东排行榜
