@@ -27,7 +27,7 @@ const inviteCodes = [
   `T018v_h6QBkb_FXUIRub1ACjVfnoaW5kRrbA@T0205KkcCmZnnCiueUeJ9oN9CjVfnoaW5kRrbA`,
   `T0205KkcP3lYry2QSFu2_INNCjVfnoaW5kRrbA@T0225KkcRB1NpFDfcR71x_UMcQCjVfnoaW5kRrbA`,
 ]
-let reward = process.env.JD_HEALTH_REWARD_NAME ? process.env.JD_HEALTH_REWARD_NAME : ''
+let reward = $.isNode() ? (process.env.JD_HEALTH_REWARD_NAME ? process.env.JD_HEALTH_REWARD_NAME : '') : ($.getdata('JD_HEALTH_REWARD_NAME') ? $.getdata('JD_HEALTH_REWARD_NAME') : '');
 const randomCount = $.isNode() ? 20 : 5;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -144,7 +144,7 @@ function getTaskDetail(taskId = '') {
               await $.wait(1000 * (data?.data?.result?.taskVos[0]?.waitDuration || 3));
               await doTask(data?.data?.result?.taskVos[0].shoppingActivityVos[0]?.taskToken, 22, 0);//完成任务
             } else {
-              for (let vo of data?.data?.result?.taskVos.filter(vo => vo.taskType !== 19) ?? []) {
+              for (let vo of data?.data?.result?.taskVos.filter(vo => vo.taskType !== 19 && vo.taskType !== 25) ?? []) {
                 console.log(`${vo.taskName}任务，完成次数：${vo.times}/${vo.maxTimes}`)
                 for (let i = vo.times; i < vo.maxTimes; i++) {
                   console.log(`去完成${vo.taskName}任务`)
@@ -227,6 +227,8 @@ function exchange(commodityType, commodityId) {
             if ($.isNode()) {
               allMessage += `【京东账号${$.index}】 ${$.UserName}\n兑换${data.data.result.jingBeanNum}京豆成功🎉${$.index !== cookiesArr.length ? '\n\n' : ''}`
             }
+          } else {
+            console.log(data.data.bizMsg)
           }
         }
       } catch (e) {
@@ -357,10 +359,10 @@ function shareCodesFormat() {
       const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = inviteCodes[tempIndex].split('@');
     }
-    const readShareCodeRes = await readShareCode();
-    if (readShareCodeRes && readShareCodeRes.code === 200) {
-      $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
-    }
+    // const readShareCodeRes = await readShareCode();
+    // if (readShareCodeRes && readShareCodeRes.code === 200) {
+    //   $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
+    // }
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
